@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%l] - [%p] %m%n"/>
+        </Console>
+        
+        <!-- 文件输出 -->
+        <RollingFile name="DailyFile" fileName="logs/log.log"
+                     filePattern="logs/log.%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%l] - [%p] %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    
+    <Loggers>
+        <!-- MyBatis日志 -->
+        <Logger name="top.wx.Mapper" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="DailyFile"/>
+        </Logger>
+        
+        <!-- 根日志 -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="DailyFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

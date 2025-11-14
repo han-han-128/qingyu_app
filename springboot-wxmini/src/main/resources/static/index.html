@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>微信小程序后端接口测试</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        .api-section {
+            margin: 20px 0;
+            padding: 15px;
+            border-left: 4px solid #4CAF50;
+            background-color: #f9f9f9;
+        }
+        .api-section h3 {
+            margin-top: 0;
+            color: #4CAF50;
+        }
+        .api-info {
+            margin: 10px 0;
+        }
+        .method {
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #2196F3;
+            color: white;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .endpoint {
+            font-family: monospace;
+            background-color: #eee;
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin: 5px 0;
+            display: inline-block;
+        }
+        .status {
+            text-align: center;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .status h2 {
+            color: #4CAF50;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status">
+            <h2>✅ 项目运行成功！</h2>
+            <p>Spring Boot 微信小程序后端服务</p>
+        </div>
+
+        <h1>API 接口列表</h1>
+
+        <div class="api-section">
+            <h3>1. 用户注册</h3>
+            <div class="api-info">
+                <span class="method">POST</span>
+                <span class="endpoint">/demo/register</span>
+            </div>
+            <p><strong>请求参数：</strong></p>
+            <pre>{
+  "username": "用户名",
+  "password": "密码"
+}</pre>
+        </div>
+
+        <div class="api-section">
+            <h3>2. 用户登录</h3>
+            <div class="api-info">
+                <span class="method">POST</span>
+                <span class="endpoint">/demo/login</span>
+            </div>
+            <p><strong>请求参数：</strong></p>
+            <pre>{
+  "username": "用户名",
+  "password": "密码"
+}</pre>
+        </div>
+
+        <div class="api-section">
+            <h3>3. 微信登录</h3>
+            <div class="api-info">
+                <span class="method">POST</span>
+                <span class="endpoint">/demo/wxLogin?code=微信code</span>
+            </div>
+            <p><strong>说明：</strong>需要配置微信小程序的 appid 和 secret</p>
+        </div>
+
+        <div style="margin-top: 30px; padding: 15px; background-color: #fff3cd; border-radius: 5px;">
+            <h3>📌 使用说明：</h3>
+            <ul>
+                <li>使用 Postman 或其他工具测试以上接口</li>
+                <li>Content-Type 设置为 application/json</li>
+                <li>确保 MySQL 数据库已启动，数据库名为：<strong>wxmini</strong></li>
+                <li>微信登录接口需要在 UserController.java 中配置真实的 appid 和 secret</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
