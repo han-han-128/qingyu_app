@@ -15,8 +15,13 @@
     "uglifyFileName": false,
     "uploadWithSourceMap": true,
     "enhance": false,
-    "packNpmManually": false,
-    "packNpmRelationList": [],
+    "packNpmManually": true,
+    "packNpmRelationList": [
+      {
+        "packageJsonPath": "./package.json",
+        "miniprogramNpmDistDir": "./miniprogram_npm"
+      }
+    ],
     "minifyWXSS": true,
     "minifyWXML": true,
     "localPlugins": false,
@@ -29,7 +34,9 @@
       "ignore": [],
       "disablePlugins": [],
       "outputPath": ""
-    }
+    },
+    "nodeModules": true,
+    "enableEngineNative": false
   },
   "compileType": "miniprogram",
   "libVersion": "3.11.2",

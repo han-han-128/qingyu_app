@@ -1,10 +1,41 @@
 {
   "pages": [
     "pages/login/login",
-    "pages/register/register"
-    
- 
+    "pages/register/register",
+    "pages/home/home",
+    "pages/activity/activity",
+    "pages/identify/identify",
+    "pages/map/map",
+    "pages/my/my"
   ],
+  "usingComponents": {
+  "t-toast": "/miniprogram_npm/tdesign-miniprogram/toast/toast"
+},
+  "tabBar": {
+    "custom": true,
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/map/map",
+        "text": "地图"
+      },
+      {
+        "pagePath": "pages/identify/identify",
+        "text": "识别"
+      },
+      {
+        "pagePath": "pages/activity/activity",
+        "text": "公益"
+      },
+      {
+        "pagePath": "pages/my/my",
+        "text": "我的"
+      }
+    ]
+  },
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",

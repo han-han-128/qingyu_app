@@ -47,6 +47,12 @@ Page({
               icon: 'success',
               duration: 3000
             })
+            // 登录成功后跳转到home页面
+            setTimeout(function() {
+              wx.switchTab({
+                url: '../home/home',
+              })
+            }, 1500)
           } else {
             wx.showToast({
               title: res.data.msg,
@@ -78,8 +84,8 @@ Page({
             console.log(result);
             // 保存用户信息到本地缓存，可以用作小程序端的拦截器
             //app.setGlobalUserInfo(e.detail.userInfo);
-            wx.redirectTo({
-              url: '../register/register',
+            wx.switchTab({
+              url: '../home/home',
             })
           }
         })
