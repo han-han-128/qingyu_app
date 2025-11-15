@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.example</groupId>
+  <artifactId>qing_common</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+<!--    <parent>-->
+<!--        <artifactId>qingyu_app_backend</artifactId>-->
+<!--        <groupId>com.example</groupId>-->
+<!--        <version>1.0-SNAPSHOT</version>-->
+<!--    </parent>-->
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>qingyu_app_backend</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+<!--    <parent>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <version>2.7.18</version>-->
+<!--    </parent>-->
+  <name>qing_common</name>
+  <url>http://maven.apache.org</url>
+
+    <!-- 子模块无需重复配置仓库，继承父模块的清华源 -->
+    <dependencies>
+        <!-- Lombok：继承父模块版本 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- FastJSON：继承父模块版本 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
+        <!-- Commons Lang：继承父模块版本（已在父模块添加版本管理） -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+        </dependency>
+
+        <!-- Spring JSON：继承Spring Boot父模块版本 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+
+        <!-- JJWT：继承父模块版本 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+        </dependency>
+
+        <!-- 配置处理器：可选依赖，不传递给其他模块 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- 阿里云OSS：继承父模块版本 -->
+        <dependency>
+            <groupId>com.aliyun.oss</groupId>
+            <artifactId>aliyun-sdk-oss</artifactId>
+        </dependency>
+
+        <!-- JAXB API：继承父模块版本 -->
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+
+        <!-- 微信支付SDK：继承父模块版本 -->
+        <dependency>
+            <groupId>com.github.wechatpay-apiv3</groupId>
+            <artifactId>wechatpay-apache-httpclient</artifactId>
+        </dependency>
+    </dependencies>
+
+    <!-- 继承父模块的编译配置，确保JDK版本一致 -->
+    <build>
+        <plugins>
+            <!-- 直接使用父模块定义的编译插件配置 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

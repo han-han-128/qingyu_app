@@ -1,4 +1,4 @@
-package top.wx.common;
+package com.example.qing.result;
 
 public class JsonResult {
 	
