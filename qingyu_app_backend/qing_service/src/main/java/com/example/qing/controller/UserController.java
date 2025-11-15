@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.example.qing.entity.User;
 import com.example.qing.result.JsonResult;
-import com.example.qing.result.Result;
 import com.example.qing.service.Userservice;
 import com.example.qing.utils.HttpClientUtil;
 import org.apache.commons.lang3.StringUtils;

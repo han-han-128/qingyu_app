@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "sky.alioss",
+      "type": "com.example.qing.properties.AliOssProperties",
+      "sourceType": "com.example.qing.properties.AliOssProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "sky.alioss.access-key-id",
+      "type": "java.lang.String",
+      "sourceType": "com.example.qing.properties.AliOssProperties"
+    },
+    {
+      "name": "sky.alioss.access-key-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.example.qing.properties.AliOssProperties"
+    },
+    {
+      "name": "sky.alioss.bucket-name",
+      "type": "java.lang.String",
+      "sourceType": "com.example.qing.properties.AliOssProperties"
+    },
+    {
+      "name": "sky.alioss.endpoint",
+      "type": "java.lang.String",
+      "sourceType": "com.example.qing.properties.AliOssProperties"
+    }
+  ],
+  "hints": []
+}
