@@ -38,29 +38,40 @@ Page({
           'content-type': 'application/json' //默认值
         },
         success: function (res) {
-          console.log(res.data);
-          var status = res.data.status;
-          if (status == 200) {
-            //登录成功
-            wx.showToast({
-              title: "登录成功",
-              icon: 'success',
-              duration: 3000
-            })
-            // 登录成功后跳转到home页面
-            setTimeout(function() {
-              wx.switchTab({
-                url: '../home/home',
+            console.log(res.data);
+            var status = res.data.status;
+            if (status == 200) {
+              // 保存用户信息到本地缓存和全局变量
+              const userInfo = res.data.data;
+              if (userInfo) {
+                // 保存到全局变量
+                app.userInfo = userInfo;
+                // 保存到本地缓存
+                wx.setStorageSync('userInfo', userInfo);
+                console.log('用户信息已保存:', userInfo);
+              }
+              
+              //登录成功提示
+              wx.showToast({
+                title: "登录成功",
+                icon: 'success',
+                duration: 3000
               })
-            }, 1500)
-          } else {
-            wx.showToast({
-              title: res.data.msg,
-              icon: 'none',
-              duration: 3000
-            })
+              
+              // 登录成功后跳转到home页面
+              setTimeout(function() {
+                wx.switchTab({
+                  url: '../home/home',
+                })
+              }, 1500)
+            } else {
+              wx.showToast({
+                title: res.data.msg,
+                icon: 'none',
+                duration: 3000
+              })
+            }
           }
-        }
       })
     }
   },
@@ -82,8 +93,14 @@ Page({
           method: "POST",
           success: function (result) {
             console.log(result);
-            // 保存用户信息到本地缓存，可以用作小程序端的拦截器
-            //app.setGlobalUserInfo(e.detail.userInfo);
+            // 保存用户信息到本地缓存和全局变量
+            const userInfo = result.data.data || e.detail.userInfo;
+            // 保存到全局变量
+            app.userInfo = userInfo;
+            // 保存到本地缓存
+            wx.setStorageSync('userInfo', userInfo);
+            console.log('微信登录用户信息已保存:', userInfo);
+            
             wx.switchTab({
               url: '../home/home',
             })

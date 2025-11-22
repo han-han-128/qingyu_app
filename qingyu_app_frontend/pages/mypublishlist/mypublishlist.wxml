@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="header">
+    <text class="title">我的发布历史</text>
+  </view>
+  
+  <!-- 加载提示 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+  
+  <!-- 空状态 -->
+  <view wx:elif="{{!loading && publishList.length === 0}}" class="empty">
+    <text>暂无发布记录</text>
+  </view>
+  
+  <!-- 发布列表卡片 -->
+  <view wx:else class="publish-list">
+    <view wx:for="{{publishList}}" wx:key="id" class="publish-card" bindtap="goToDetail" data-id="{{item.id}}">
+      <!-- 标题 -->
+      <view class="title">{{item.title}}</view>
+      
+      <!-- 发布时间 -->
+      <view class="time">{{item.formattedTime}}</view>
+      
+      <!-- 内容预览 -->
+      <view class="content">
+        {{item.content || item.text || '暂无内容'}}
+      </view>
+      
+      <!-- 移除图片显示 -->
+      
+      <!-- 点击提示 -->
+      <view class="click-hint">点击查看详情</view>
+    </view>
+  </view>
+</view>

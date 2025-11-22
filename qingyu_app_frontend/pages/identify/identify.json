@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "身份认证页面",
+  "navigationBarTitleText": "AI识别页面",
   "usingComponents": {
     "t-navbar": "/miniprogram_npm/tdesign-miniprogram/navbar/navbar",
     "t-tab-bar": "/miniprogram_npm/tdesign-miniprogram/tab-bar/tab-bar",

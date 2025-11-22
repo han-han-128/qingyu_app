@@ -1,0 +1,28 @@
+<!-- pages/myreportlist/myreportlist.wxml -->
+<view class="container">
+  <view class="header">
+    <view class="title">我的上报</view>
+    <view class="header-right">
+      <text class="more" bindtap="showMoreOptions">...</text>
+    </view>
+  </view>
+  
+  <view class="content">
+    <view wx:if="{{loading}}" class="loading">
+      <text>加载中...</text>
+    </view>
+    
+    <view wx:elif="{{reportList.length === 0}}" class="empty">
+      <text>暂无上报记录</text>
+    </view>
+    
+    <view wx:else class="report-list">
+      <view wx:for="{{reportList}}" wx:key="id" class="report-card" bindtap="goToDetail" data-id="{{item.id}}">
+        <view class="report-time">{{item.formattedTime}}</view>
+        <view class="report-location">{{item.location || '位置信息未提供'}}</view>
+        <view class="report-urgency">紧急程度: {{item.urgency || '普通'}}</view>
+        <view class="report-content">{{item.content || '无内容'}}</view>
+      </view>
+    </view>
+  </view>
+</view>

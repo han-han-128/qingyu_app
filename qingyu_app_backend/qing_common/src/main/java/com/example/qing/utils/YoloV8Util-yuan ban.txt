@@ -1,0 +1,209 @@
+//这是未对yolov10优化的版本，作为备份
+
+
+package com.example.qing.utils;
+
+import org.opencv.core.*;
+import org.opencv.dnn.*;
+import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+
+public class YoloV8Util {
+    // 模型文件路径：ONNX格式的YOLOv10模型文件，包含目标检测的网络结构和权重
+    private static final String MODEL_ONNX = "yolov/yolov10n.onnx"; // 这里是暂时的
+    // 类别名称文件路径：包含所有可检测类别的名称列表（每行一个类别）
+    private static final String MODEL_CLASSES = "yolov/coco.names";
+    // 置信度阈值：仅保留置信度高于此值的检测结果（过滤低置信度误检）
+    private static final double CONFIDENCE_THRESHOLD = 0.5;
+    // NMS阈值：非极大值抑制阈值，用于移除重叠度高的检测框（保留最佳检测结果）
+    private static final double NMS_THRESHOLD = 0.4;
+    // 模型输入宽度：图片输入到模型前需调整为该宽度（与训练时的输入尺寸一致）
+    private static final int INPUT_WIDTH = 640;
+    // 模型输入高度：图片输入到模型前需调整为该高度（与训练时的输入尺寸一致）
+    private static final int INPUT_HEIGHT = 640;
+
+    static { System.loadLibrary(Core.NATIVE_LIBRARY_NAME); }
+    private static final Net net = loadModel();
+
+    // 模型加载方法
+    private static Net loadModel() {
+        try {
+            InputStream onnxStream = YoloV8Util.class.getClassLoader().getResourceAsStream(MODEL_ONNX);
+            File onnxFile = File.createTempFile("yolov8", ".onnx");
+            Files.copy(onnxStream, onnxFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            Net net = Dnn.readNetFromONNX(onnxFile.getAbsolutePath());
+            net.setPreferableBackend(Dnn.DNN_BACKEND_OPENCV);
+            net.setPreferableTarget(Dnn.DNN_TARGET_CPU);
+            onnxFile.delete();
+            return net;
+        } catch (IOException e) {
+            throw new RuntimeException("模型加载失败", e);
+        }
+    }
+
+    // 图片检测方法
+    public static DetectionResult detect(byte[] imageBytes) {
+        Mat image = Imgcodecs.imdecode(new MatOfByte(imageBytes), Imgcodecs.IMREAD_UNCHANGED);
+        if (image.empty()) throw new RuntimeException("图片解码失败");
+
+        // 预处理图片
+        Mat blob = Dnn.blobFromImage(image, 1/255.0, new Size(INPUT_WIDTH, INPUT_HEIGHT), new Scalar(0,0,0), true, false);
+        net.setInput(blob);
+
+        // 模型推理
+        List<Mat> outs = new ArrayList<>();
+        net.forward(outs);
+
+        // 解析结果
+        Mat output = outs.get(0);
+        List<Integer> classIds = new ArrayList<>();
+        List<Float> confidences = new ArrayList<>();
+        List<Rect> boxes = new ArrayList<>();
+
+        // YOLOv8输出: [1, 8400, 84] for COCO
+        float[] data = new float[(int)(output.total() * output.channels())];
+        output.get(0, 0, data);
+        int rows = 8400;
+        int dimensions = 84;
+
+        for (int i = 0; i < rows; ++i) {
+            float confidence = data[i * dimensions + 4];
+            if (confidence > CONFIDENCE_THRESHOLD) {
+                // 计算类别
+                float maxClassScore = 0;
+                int classId = 0;
+                for (int j = 5; j < dimensions; ++j) {
+                    float score = data[i * dimensions + j];
+                    if (score > maxClassScore) {
+                        maxClassScore = score;
+                        classId = j - 5;
+                    }
+                }
+
+                if (maxClassScore > CONFIDENCE_THRESHOLD) {
+                    confidences.add(confidence);
+                    classIds.add(classId);
+                    float x = data[i * dimensions + 0];
+                    float y = data[i * dimensions + 1];
+                    float w = data[i * dimensions + 2];
+                    float h = data[i * dimensions + 3];
+
+                    // 转换为像素坐标
+                    int imageWidth = image.cols();
+                    int imageHeight = image.rows();
+                    int left = (int) ((x - w / 2) * imageWidth);
+                    int top = (int) ((y - h / 2) * imageHeight);
+                    int width = (int) (w * imageWidth);
+                    int height = (int) (h * imageHeight);
+
+                    boxes.add(new Rect(left, top, width, height));
+                }
+            }
+        }
+
+        // 非极大值抑制（NMS）
+        MatOfInt indices = new MatOfInt();
+        if (!boxes.isEmpty()) {
+            // 将 Rect 转换为 Rect2d
+            List<Rect2d> boxes2d = new ArrayList<>();
+            for (Rect rect : boxes) {
+                boxes2d.add(new Rect2d(rect.x, rect.y, rect.width, rect.height));
+            }
+
+            // 创建 OpenCV 需要的 MatOfRect2d 对象
+            MatOfRect2d boxesMat = new MatOfRect2d();
+            boxesMat.fromList(boxes2d);
+
+            // 创建置信度的 MatOfFloat
+            float[] confArray = new float[confidences.size()];
+            for (int i = 0; i < confidences.size(); i++) {
+                confArray[i] = confidences.get(i);
+            }
+            MatOfFloat confidencesMat = new MatOfFloat(confArray);
+
+            // 调用 NMSBoxes
+            Dnn.NMSBoxes(boxesMat, confidencesMat, (float)CONFIDENCE_THRESHOLD, (float)NMS_THRESHOLD, indices);
+        }
+
+        // 加载类别名称
+        List<String> classes = loadClasses();
+
+        // 绘制检测框
+        Scalar color = new Scalar(0, 255, 0);
+        int[] indicesArray = indices.toArray();
+        for (int i = 0; i < indicesArray.length; i++) {
+            int idx = indicesArray[i];
+            Rect box = boxes.get(idx);
+            String label = classes.get(classIds.get(idx)) + ": " + String.format("%.2f", confidences.get(idx));
+            Imgproc.rectangle(image, box, color, 2);
+            Imgproc.putText(image, label, new Point(box.x, box.y-5), Imgproc.FONT_HERSHEY_SIMPLEX, 0.5, color, 2);
+        }
+
+        // 生成结果
+        MatOfByte detectedImageBytes = new MatOfByte();
+        Imgcodecs.imencode(".jpg", image, detectedImageBytes);
+
+        DetectionResult result = new DetectionResult();
+        result.setDetectedImageBytes(detectedImageBytes.toArray());
+
+        // 设置置信度和检测结果
+        if (!confidences.isEmpty()) {
+            float maxConfidence = 0;
+            for (float conf : confidences) {
+                if (conf > maxConfidence) maxConfidence = conf;
+            }
+            result.setConfidence(maxConfidence);
+
+            // 检查是否检测到鸟类（COCO数据集中鸟类的类别ID通常是14-16）
+            boolean birdDetected = false;
+            for (int classId : classIds) {
+                if (classId >= 14 && classId <= 16) { // 鸟类在COCO中的ID范围
+                    birdDetected = true;
+                    break;
+                }
+            }
+            result.setDetectionResult(birdDetected ? "检测到鸟类" : "未检测到鸟类");
+        } else {
+            result.setConfidence(0.0);
+            result.setDetectionResult("未检测到鸟类");
+        }
+
+        return result;
+    }
+
+    // 加载类别名称
+    private static List<String> loadClasses() {
+        List<String> classes = new ArrayList<>();
+        try (InputStream inputStream = YoloV8Util.class.getClassLoader().getResourceAsStream(MODEL_CLASSES)) {
+            if (inputStream == null) throw new RuntimeException("类别文件未找到");
+            String content = new String(inputStream.readAllBytes());
+            classes.addAll(List.of(content.split(System.lineSeparator())));
+        } catch (IOException e) {
+            throw new RuntimeException("类别加载失败", e);
+        }
+        return classes;
+    }
+
+    // 检测结果封装类
+    public static class DetectionResult {
+        private byte[] detectedImageBytes;
+        private double confidence;
+        private String detectionResult;
+
+        // getter和setter
+        public byte[] getDetectedImageBytes() { return detectedImageBytes; }
+        public void setDetectedImageBytes(byte[] detectedImageBytes) { this.detectedImageBytes = detectedImageBytes; }
+        public double getConfidence() { return confidence; }
+        public void setConfidence(double confidence) { this.confidence = confidence; }
+        public String getDetectionResult() { return detectionResult; }
+        public void setDetectionResult(String detectionResult) { this.detectionResult = detectionResult; }
+    }
+}

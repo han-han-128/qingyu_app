@@ -1,0 +1,14 @@
+<view class="container">
+  <view class="news-detail">
+    <view class="news-title">{{news.title}}</view>
+    <view class="news-meta">
+      <text class="news-time">{{news.createTime}}</text>
+      <text class="news-views">👁️ {{news.viewCount}}</text>
+    </view>
+    <view class="news-content">{{news.content}}</view>
+    <!-- 图片列表 -->
+    <view class="news-images" wx:if="{{news.images && news.images.length > 0}}">
+      <image class="news-image" wx:for="{{news.images}}" wx:key="id" src="{{item.imageUrl}}" mode="widthFix"></image>
+    </view>
+  </view>
+</view>

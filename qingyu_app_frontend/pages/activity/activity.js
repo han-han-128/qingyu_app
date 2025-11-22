@@ -1,4 +1,5 @@
 // pages/activity/activity.js
+const app = getApp();
 Page({
   /**
    * 页面的初始数据
@@ -6,12 +7,35 @@ Page({
   data: {
     
   },
-
+  
+  /**
+   * 检查用户登录状态
+   */
+  checkLoginStatus: function() {
+    if (!app.isLoggedIn()) {
+      console.log('未登录，跳转到登录页');
+      wx.redirectTo({
+        url: '../login/login'
+      });
+      return false;
+    }
+    return true;
+  },
+  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    // 检查用户登录状态
+    this.checkLoginStatus();
+  },
+  
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function() {
+    // 每次显示页面都检查登录状态
+    this.checkLoginStatus();
   },
 
   /**

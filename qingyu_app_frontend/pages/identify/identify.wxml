@@ -1,3 +1,18 @@
 <view class="container">
-  <view class="page-title">这是身份认证页面</view>
+  <view class="page-title">AI智能识别</view>
+  
+  <!-- 图片显示区域 -->
+  <view class="image-container" bindtap="showImagePicker" hover-class="image-container-hover">
+    <image 
+      wx:if="{{ imageUrl }}" 
+      class="identify-image" 
+      src="{{ imageUrl }}" 
+      mode="aspectFit"
+    />
+    <text wx:else class="image-hint">点击选择图片</text>
+  </view>
+  <t-button class="identify-button" type="primary" bindtap="startIdentify" disabled="{{!imageUrl}}" size="large" style="margin-top: 20rpx;">识别</t-button>
+  <view class="image-container" wx:if="{{ recognizedImageUrl }}">
+    <image class="identify-image" src="{{ recognizedImageUrl }}" mode="aspectFit" />
+  </view>
 </view>

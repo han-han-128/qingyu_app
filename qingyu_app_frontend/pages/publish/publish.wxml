@@ -1,0 +1,35 @@
+<view class="container">
+  <view class="publish-form">
+    <!-- 标题输入 -->
+    <view class="form-item">
+      <input class="title-input" placeholder="请输入标题" value="{{title}}" bindinput="onTitleInput" maxlength="50" />
+    </view>
+
+    <!-- 内容输入 -->
+    <view class="form-item">
+      <textarea class="content-input" placeholder="分享你的发现..." value="{{content}}" bindinput="onContentInput" auto-height />
+    </view>
+
+    <!-- 图片上传区域 -->
+    <view class="form-item">
+      <view class="image-list">
+        <!-- 已上传的图片 -->
+        <view wx:for="{{images}}" wx:key="index" class="image-item">
+          <image src="{{item}}" mode="aspectFill" class="upload-image" />
+          <view class="delete-btn" bindtap="deleteImage" data-index="{{index}}">×</view>
+        </view>
+        <!-- 上传按钮 -->
+        <view wx:if="{{images.length < maxImages}}" class="upload-btn" bindtap="chooseImage">
+          <text class="upload-icon">+</text>
+          <text class="upload-text">添加图片</text>
+        </view>
+      </view>
+      <text class="image-hint">{{images.length}}/{{maxImages}}</text>
+    </view>
+
+    <!-- 发布按钮 -->
+    <view class="publish-action">
+      <button class="publish-button" bindtap="publishNews">发布</button>
+    </view>
+  </view>
+</view>

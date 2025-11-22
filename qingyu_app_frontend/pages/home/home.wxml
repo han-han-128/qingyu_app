@@ -1,3 +1,36 @@
 <view class="container">
-  <view class="page-title">这是首页</view>
+  <view class="page-title">青屿之眼</view>
+  
+  <!-- 轮播图组件 -->
+  <swiper class="swiper" indicator-dots="true" autoplay="true" interval="3000" duration="500" indicator-active-color="#ffffff" indicator-color="rgba(255,255,255,0.5)">
+    <block wx:for="{{swiperList}}" wx:key="id">
+      <swiper-item>
+        <image src="{{item.image}}" class="swiper-image" mode="aspectFill" bindtap="onSwiperItemTap" data-index="{{index}}"/>
+      </swiper-item>
+    </block>
+  </swiper>
+  
+  <!-- 新闻列表 -->
+  <scroll-view class="news-list" scroll-y="true">
+    <view class="news-item" wx:for="{{newsList}}" wx:key="id" bindtap="goToNewsDetail" data-newsid="{{item.id}}">
+      <view class="news-title">{{item.title}}</view>
+      <view class="news-content">{{item.content}}</view>
+      <view class="news-meta">
+        <text class="news-time">{{item.createTime}}</text>
+        <text class="news-views">👁️ {{item.viewCount}}</text>
+      </view>
+      <!-- 图片列表 -->
+      <view class="news-images" wx:if="{{item.images && item.images.length > 0}}">
+        <image class="news-image" wx:for="{{item.images}}" wx:key="id" src="{{item.imageUrl}}" mode="aspectFill"></image>
+      </view>
+    </view>
+  </scroll-view>
+  <!-- 右下角紧急按钮 -->
+  <view class="emergency-btn" bindtap="goToEmergencyReport">
+    <text class="emergency-text">⚡ 紧急</text>
+  </view>
+  <!-- 右下角发布按钮 -->
+  <view class="publish-btn" bindtap="goToPublish">
+    <text class="publish-text">+ 发布</text>
+  </view>
 </view>

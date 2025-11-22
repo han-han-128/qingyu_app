@@ -22,6 +22,11 @@ public class Userservice {
 
         return user == null ? false : true;
     }
+    
+    // 根据用户名获取用户对象
+    public User getUserByUsername(String username) {
+        return userMapper.findUsernameIsExist(username);
+    }
 
     public void saveUser(User user) {
         user.setUid(UUID.randomUUID().toString());

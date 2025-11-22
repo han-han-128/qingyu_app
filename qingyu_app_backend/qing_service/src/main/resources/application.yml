@@ -17,13 +17,21 @@ spring:
       min-idle: 5
       max-active: 20
       max-wait: 60000
-
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 50MB
+      max-request-size: 50MB
 mybatis:
   mapper-locations: classpath:Mapper/*.xml
   type-aliases-package: com.example.qing.entity  # 实体类包路径
   configuration:
     map-underscore-to-camel-case: true
-
+alioss:
+  endpoint: oss-cn-hangzhou.aliyuncs.com
+  access-key-id: LTAI5tDFi3Yg1GAEj9PVMbbt
+  access-key-secret: CBJvXMcGoahUUAfEMMqe0KvyU6y6hZ
+  bucket-name: alibucket-050706
 logging:
   level:
     com:
