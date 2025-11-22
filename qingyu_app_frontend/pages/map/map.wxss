@@ -1,14 +1,30 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.page {
   height: 100vh;
-  background-color: #f8f8f8;
+  box-sizing: border-box;
 }
 
-.page-title {
-  font-size: 18px;
-  color: #333;
-  text-align: center;
+.btns {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  gap: 16rpx;
+  padding: 16rpx;
+  background: #ffffff;
+  box-shadow: 0 8rpx 16rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 按钮样式优化 */
+.btns button {
+  flex: 1;
+  border-radius: 12rpx;
+}
+
+/* 置顶按钮栏高度约为 120rpx（含内边距与按钮），地图占满剩余高度 */
+.map {
+  width: 100%;
+  margin-top: 120rpx;
+  height: calc(100vh - 120rpx);
 }

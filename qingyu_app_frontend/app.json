@@ -8,10 +8,7 @@
     "pages/identify/identify",
     "pages/map/map",
     "pages/my/my",
-    "pages/report/report",
-    "pages/newsdetail/newsdetail",
-    "pages/mypublishlist/mypublishlist",
-    "pages/myreportlist/myreportlist"
+    "pages/monitor-detail/monitor-detail"
   ],
   "usingComponents": {
   "t-toast": "/miniprogram_npm/tdesign-miniprogram/toast/toast"
@@ -48,11 +45,5 @@
     "navigationBarTextStyle": "black"
   },
   "debug":true,
-  "permission": {
-    "scope.userLocation": {
-      "desc": "你的位置信息将用于应急上报位置确认"
-    }
-  },
-  "requiredPrivateInfos": ["chooseLocation"],
   "sitemapLocation": "sitemap.json"
 }

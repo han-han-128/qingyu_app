@@ -32,6 +32,15 @@ alioss:
   access-key-id: LTAI5tDFi3Yg1GAEj9PVMbbt
   access-key-secret: CBJvXMcGoahUUAfEMMqe0KvyU6y6hZ
   bucket-name: alibucket-050706
+
+stream:
+  ffmpeg:
+    path: C:/ProgramData/chocolatey/bin/ffmpeg.exe
+  hls:
+    output-dir: E:/桌面/软件开发/qingyu_app/hls_output
+    segment-duration: 1
+    playlist-size: 10
+
 logging:
   level:
     com:
@@ -40,3 +49,4 @@ logging:
           mapper: debug
           service: info
           controller: info
+
