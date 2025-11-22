@@ -1,0 +1,109 @@
+<!--pages/monitor-detail/monitor-detail.wxml-->
+<view class="container">
+  <view wx:if="{{loading}}" class="loading">
+    <view class="loading-spinner"></view>
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <view wx:else class="monitor-detail">
+    <view wx:if="{{monitorInfo}}">
+      <!-- 视频区域 -->
+      <view class="video-section">
+        <video
+          wx:if="{{hlsUrl}}"
+          class="video-player"
+          src="{{hlsUrl}}"
+          controls
+          autoplay
+          object-fit="contain"
+          show-center-play-btn
+          enable-play-gesture
+        />
+        <view wx:else class="no-video">
+          <view class="no-video-icon">📹</view>
+          <text class="no-video-text">{{monitorInfo.videoStreamUrl ? '点击下方按钮启动视频流' : '暂无视频流'}}</text>
+        </view>
+        
+        <!-- 实时监控标签 -->
+        <view wx:if="{{isStreaming && monitorInfo.status === 'ONLINE'}}" class="live-badge">
+          <view class="live-dot"></view>
+          <text>实时监控</text>
+        </view>
+
+        <!-- 视频控制按钮 -->
+        <view wx:if="{{monitorInfo.videoStreamUrl}}" class="video-controls">
+          <button 
+            wx:if="{{!isStreaming}}" 
+            class="control-btn start-btn" 
+            bindtap="startVideo"
+            size="mini"
+          >
+            <text class="btn-icon">▶</text>
+            <text class="btn-text">启动视频</text>
+          </button>
+          <button 
+            wx:else 
+            class="control-btn stop-btn" 
+            bindtap="stopVideo"
+            size="mini"
+          >
+            <text class="btn-icon">■</text>
+            <text class="btn-text">停止视频</text>
+          </button>
+        </view>
+      </view>
+
+      <!-- 监测点信息卡片 -->
+      <view class="info-card">
+        <view class="card-header">
+          <view class="title-row">
+            <text class="card-title">{{monitorInfo.name}}</text>
+            <view class="status-badge {{monitorInfo.status === 'ONLINE' ? 'status-online' : 'status-offline'}}">
+              <view class="status-dot"></view>
+              <text>{{monitorInfo.status === 'ONLINE' ? '在线' : '离线'}}</text>
+            </view>
+          </view>
+          <view wx:if="{{monitorInfo.description}}" class="card-desc">
+            {{monitorInfo.description}}
+          </view>
+        </view>
+        
+        <view class="location-row">
+          <text class="location-icon">📍</text>
+          <text class="location-text">{{monitorInfo.latitude}}, {{monitorInfo.longitude}}</text>
+        </view>
+      </view>
+
+      <!-- 监测数据区域 -->
+      <view class="data-card">
+        <view class="data-header">
+          <text class="data-title">监测数据</text>
+          <text class="data-subtitle">实时环境参数</text>
+        </view>
+
+        <view wx:if="{{monitorData.length > 0}}" class="data-content">
+          <view class="data-item" wx:for="{{monitorData}}" wx:key="id">
+            <view class="data-left">
+              <text class="data-label">
+                <text wx:if="{{getDataTypeText(item.dataType)}}">{{getDataTypeText(item.dataType)}}</text>
+                <text wx:else>{{item.dataType || '未知参数'}}</text>
+              </text>
+              <text class="data-time">{{formatTime(item.recordedTime)}}</text>
+            </view>
+            <view class="data-right">
+              <view class="value-with-unit">
+                <text class="data-value">{{item.value}}</text>
+                <text wx:if="{{getDataUnit(item.dataType)}}" class="data-unit"> {{getDataUnit(item.dataType)}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view wx:else class="empty-state">
+          <text class="empty-icon">📊</text>
+          <text class="empty-text">暂无监测数据</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

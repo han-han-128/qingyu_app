@@ -1,3 +1,7 @@
 <view class="container">
   <view class="page-title">这是首页</view>
+  <!-- 右下角发布按钮 -->
+  <view class="publish-btn" bindtap="goToPublish">
+    <text class="publish-text">+ 发布</text>
+  </view>
 </view>

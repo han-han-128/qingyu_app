@@ -1,3 +1,18 @@
-<view class="container">
-  <view class="page-title">这是地图页面</view>
+<!-- ... existing code ... -->
+<view class="page">
+  <view class="btns">
+    <button size="mini" bindtap="switchRegion" data-key="fujian">福建区域</button>
+    <button size="mini" bindtap="switchRegion" data-key="taiwan">台湾区域</button>
+    <button size="mini" bindtap="switchRegion" data-key="quanzhouMangrove">泉州红树林专题区域</button>
+  </view>
+
+  <map
+    class="map"
+    longitude="{{longitude}}"
+    latitude="{{latitude}}"
+    scale="{{scale}}"
+    markers="{{markers}}"
+    bindmarkertap="onMarkerTap"
+  />
 </view>
+<!-- ... existing code ... -->

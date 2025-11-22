@@ -61,5 +61,12 @@ Page({
    */
   onShareAppMessage: function () {
     
+  },
+  
+  // 跳转到发布页面
+  goToPublish: function() {
+    wx.navigateTo({
+      url: '/pages/publish/publish'
+    })
   }
 })

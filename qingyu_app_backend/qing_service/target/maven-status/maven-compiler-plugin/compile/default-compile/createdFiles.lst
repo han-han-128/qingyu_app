@@ -1,4 +1,4 @@
+com\example\qing\mapper\UserMapper.class
+com\example\qing\controller\UserController.class
 com\example\qing\service\Userservice.class
 com\example\qing\QingApplication.class
-com\example\qing\controller\UserController.class
-com\example\qing\mapper\UserMapper.class

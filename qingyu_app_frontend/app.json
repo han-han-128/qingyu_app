@@ -3,10 +3,12 @@
     "pages/login/login",
     "pages/register/register",
     "pages/home/home",
+    "pages/publish/publish",
     "pages/activity/activity",
     "pages/identify/identify",
     "pages/map/map",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/monitor-detail/monitor-detail"
   ],
   "usingComponents": {
   "t-toast": "/miniprogram_npm/tdesign-miniprogram/toast/toast"
